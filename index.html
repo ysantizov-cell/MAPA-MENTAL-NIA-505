@@ -1,0 +1,756 @@
+<title>NIA 505 · Confirmaciones Externas</title>
+<style>
+  :root{
+    --cream:#F1E7D8;
+    --paper:#FFFFFF;
+    --maroon:#7C1F2C;
+    --maroon-deep:#48101A;
+    --maroon-mid:#9C3040;
+    --blush:#EFD7C9;
+    --ink:#241C19;
+    --ink-soft2:#6E5A50;
+    --line:rgba(36,28,25,0.14);
+    --trunk:#48101A;
+  }
+  @media (prefers-color-scheme: dark){
+    :root:not([data-theme="light"]){
+      --cream:#1A1310;
+      --paper:#2A211E;
+      --maroon:#E2657A;
+      --maroon-deep:#E2657A;
+      --maroon-mid:#C4495C;
+      --blush:#3C2A24;
+      --ink:#F1E7DC;
+      --ink-soft2:#C7B4A9;
+      --line:rgba(241,231,220,0.16);
+      --trunk:#B85062;
+    }
+  }
+  :root[data-theme="dark"]{
+    --cream:#1A1310;
+    --paper:#2A211E;
+    --maroon:#E2657A;
+    --maroon-deep:#E2657A;
+    --maroon-mid:#C4495C;
+    --blush:#3C2A24;
+    --ink:#F1E7DC;
+    --ink-soft2:#C7B4A9;
+    --line:rgba(241,231,220,0.16);
+    --trunk:#B85062;
+  }
+ 
+  *{box-sizing:border-box;}
+  body{
+    margin:0;
+    background:var(--cream);
+    color:var(--ink);
+    font-family:'Source Sans 3', ui-sans-serif, system-ui, sans-serif;
+  }
+  .wrap{
+    max-width:1220px;
+    margin:0 auto;
+    padding:56px 24px 80px;
+  }
+ 
+  /* ---------- Masthead ---------- */
+  .masthead{
+    display:flex;
+    flex-direction:column;
+    align-items:center;
+    text-align:center;
+    gap:6px;
+    margin-bottom:8px;
+  }
+  .eyebrow{
+    font-family:'Source Sans 3', sans-serif;
+    font-size:12.5px;
+    font-weight:700;
+    letter-spacing:.18em;
+    text-transform:uppercase;
+    color:var(--maroon-mid);
+  }
+ 
+  /* ---------- Hub ---------- */
+  .hub-wrap{
+    display:flex;
+    justify-content:center;
+    margin:22px 0 0;
+    transform:scale(.94);
+    animation:hubIn .7s cubic-bezier(.22,.61,.36,1) .05s both;
+  }
+  .hub{
+    position:relative;
+    width:min(360px, 78vw);
+    aspect-ratio:1/1;
+    border-radius:50%;
+    background:
+      radial-gradient(circle at 32% 26%, var(--maroon-mid), var(--maroon) 46%, var(--maroon-deep) 100%);
+    display:flex;
+    flex-direction:column;
+    align-items:center;
+    justify-content:center;
+    text-align:center;
+    padding:24px;
+    animation:hubPulse 5s ease-in-out infinite alternate, hubBreathe 5s ease-in-out infinite alternate;
+  }
+  .hub-ring{
+    position:absolute;
+    inset:14px;
+    border-radius:50%;
+    border:1.5px dashed rgba(255,255,255,0.35);
+    animation:ringSpin 26s linear infinite;
+  }
+  .hub-icon{width:34px;height:34px;margin-bottom:10px;color:#F6E9E1;position:relative;}
+  .hub h1{
+    font-family:'Big Shoulders Display', sans-serif;
+    font-weight:800;
+    font-size:clamp(28px,4.2vw,38px);
+    line-height:0.95;
+    margin:0 0 6px;
+    color:#FBF1EC;
+    letter-spacing:.01em;
+    text-wrap:balance;
+    position:relative;
+  }
+  .hub p{
+    margin:0;
+    font-size:13px;
+    line-height:1.45;
+    color:#F0D9CF;
+    max-width:220px;
+    position:relative;
+  }
+  .hub .nia-tag{
+    margin-top:12px;
+    font-size:10.5px;
+    font-weight:700;
+    letter-spacing:.16em;
+    text-transform:uppercase;
+    color:#F6E9E1;
+    background:rgba(255,255,255,0.14);
+    padding:4px 10px;
+    border-radius:999px;
+    position:relative;
+  }
+ 
+  @keyframes hubIn{ from{transform:scale(.94);} to{transform:scale(1);} }
+  @keyframes ringSpin{ to{transform:rotate(360deg);} }
+  @keyframes hubBreathe{ from{transform:scale(1);} to{transform:scale(1.025);} }
+  @keyframes hubPulse{
+    from{ box-shadow: 0 18px 40px -18px rgba(72,16,26,.55), inset 0 0 0 8px rgba(255,255,255,0.06); }
+    to{ box-shadow: 0 22px 50px -16px rgba(72,16,26,.7), inset 0 0 0 10px rgba(255,255,255,0.1); }
+  }
+  @media (prefers-color-scheme: dark){
+    :root:not([data-theme="light"]) .hub{ animation-name: hubPulseDark; }
+  }
+  :root[data-theme="dark"] .hub{ animation-name: hubPulseDark; }
+  @keyframes hubPulseDark{
+    from{ box-shadow: 0 18px 40px -18px rgba(0,0,0,.6), inset 0 0 0 8px rgba(0,0,0,0.18); }
+    to{ box-shadow: 0 22px 54px -14px rgba(0,0,0,.75), inset 0 0 0 10px rgba(0,0,0,0.26); }
+  }
+ 
+  /* ---------- Trunk + rows ---------- */
+  .trunk-area{
+    position:relative;
+    margin-top:6px;
+  }
+  .trunk-line{
+    position:absolute;
+    left:50%;
+    top:0;
+    bottom:0;
+    width:6px;
+    transform:translateX(-50%);
+    background:var(--trunk);
+    border-radius:6px;
+    opacity:.9;
+    overflow:hidden;
+  }
+  .trunk-line::after{
+    content:"";
+    position:absolute;
+    left:0;right:0;
+    top:-40%;
+    height:40%;
+    background:linear-gradient(to bottom, transparent, rgba(255,255,255,.65), transparent);
+    mix-blend-mode:overlay;
+    animation:trunkFlow 5.5s linear infinite;
+  }
+  @keyframes trunkFlow{
+    from{transform:translateY(-20%);}
+    to{transform:translateY(360%);}
+  }
+  .row{
+    position:relative;
+    display:grid;
+    grid-template-columns: 1fr 58px 74px 58px 1fr;
+    align-items:start;
+    column-gap:0;
+    padding:32px 0;
+    transform:translateY(18px);
+    animation:rowIn .7s cubic-bezier(.22,.61,.36,1) both;
+    animation-delay:calc(.2s + var(--i, 0) * .1s);
+  }
+  .row:first-of-type{padding-top:44px;}
+  @keyframes rowIn{ from{transform:translateY(18px);} to{transform:translateY(0);} }
+ 
+  .connector{
+    align-self:stretch;
+    min-height:120px;
+  }
+  .connector.left{grid-column:2;}
+  .connector.right{grid-column:4;}
+  .connector svg{width:100%;height:100%;display:block;overflow:visible;}
+  .connector path{
+    fill:none;
+    stroke:var(--trunk);
+    stroke-width:2.5;
+    stroke-linecap:round;
+    stroke-dasharray:1.2 5;
+    opacity:.55;
+    animation:dashFlow 1.8s linear infinite;
+  }
+  .connector.left path{animation-direction:reverse;}
+  @keyframes dashFlow{ to{ stroke-dashoffset:-12.4; } }
+ 
+  .badge-col{
+    grid-column:3;
+    display:flex;
+    justify-content:center;
+    padding-top:2px;
+  }
+  .badge{
+    position:relative;
+    z-index:2;
+    width:58px;height:58px;
+    border-radius:50%;
+    background:var(--paper);
+    border:4px solid var(--trunk);
+    display:flex;align-items:center;justify-content:center;
+    font-family:'Big Shoulders Display', sans-serif;
+    font-weight:800;
+    font-size:22px;
+    color:var(--maroon-deep);
+    box-shadow:0 6px 14px -6px rgba(36,28,25,.35);
+    padding:0;
+    appearance:none;
+    -webkit-appearance:none;
+  }
+  :root[data-theme="dark"] .badge{color:var(--maroon);}
+  @media (prefers-color-scheme: dark){ :root:not([data-theme="light"]) .badge{color:var(--maroon);} }
+ 
+  .card-col{grid-column:1;justify-self:end;}
+  .icon-col{grid-column:5;justify-self:start;}
+  .row.flip .card-col{grid-column:5;justify-self:start;}
+  .row.flip .icon-col{grid-column:1;justify-self:end;}
+ 
+  .card{
+    background:var(--paper);
+    border-radius:18px;
+    padding:20px 22px 22px;
+    max-width:440px;
+    box-shadow:0 10px 26px -18px rgba(36,28,25,.4);
+    border:1px solid var(--line);
+    transition:transform .35s ease, box-shadow .35s ease;
+  }
+  @media (hover:hover){
+    .card:hover{
+      transform:translateY(-5px);
+      box-shadow:0 18px 34px -16px rgba(36,28,25,.5);
+    }
+  }
+  .card h2{
+    font-family:'Big Shoulders Display', sans-serif;
+    font-weight:700;
+    font-size:20px;
+    letter-spacing:.01em;
+    margin:0 0 8px;
+    color:var(--maroon-deep);
+    text-wrap:balance;
+  }
+  :root[data-theme="dark"] .card h2{color:var(--maroon);}
+  @media (prefers-color-scheme: dark){ :root:not([data-theme="light"]) .card h2{color:var(--maroon);} }
+ 
+  .card p.lead{
+    margin:0 0 10px;
+    font-size:14px;
+    line-height:1.5;
+    color:var(--ink-soft2);
+  }
+  .card ul{
+    margin:0;
+    padding:0;
+    list-style:none;
+    display:flex;
+    flex-direction:column;
+    gap:8px;
+  }
+  .card li{
+    position:relative;
+    padding-left:16px;
+    font-size:13.5px;
+    line-height:1.5;
+    color:var(--ink);
+  }
+  .card li::before{
+    content:"";
+    position:absolute;
+    left:0;top:7px;
+    width:6px;height:6px;
+    border-radius:2px;
+    background:var(--maroon-mid);
+  }
+  .row.flip .card{margin-left:auto;}
+ 
+  .icon-chip{
+    width:104px;height:104px;
+    border-radius:22px;
+    background:var(--blush);
+    display:flex;align-items:center;justify-content:center;
+    box-shadow:inset 0 0 0 1px rgba(72,16,26,.08);
+    animation:chipFloat 3.8s ease-in-out infinite;
+    animation-delay:calc(var(--i,0) * .18s);
+    transition:transform .3s ease;
+  }
+  @media (hover:hover){
+    .icon-chip:hover{transform:scale(1.08) rotate(-2deg);}
+  }
+  .icon-chip svg{width:52px;height:52px;color:var(--maroon-deep);}
+  :root[data-theme="dark"] .icon-chip svg{color:var(--maroon);}
+  @media (prefers-color-scheme: dark){ :root:not([data-theme="light"]) .icon-chip svg{color:var(--maroon);} }
+  @keyframes chipFloat{ 0%,100%{transform:translateY(0) rotate(0deg);} 50%{transform:translateY(-7px) rotate(1.5deg);} }
+  .row.flip .icon-chip{ animation-name: chipFloatR; }
+  @keyframes chipFloatR{ 0%,100%{transform:translateY(0) rotate(0deg);} 50%{transform:translateY(-7px) rotate(-1.5deg);} }
+ 
+  /* ---------- Closing node ---------- */
+  .close-node{
+    display:flex;
+    justify-content:center;
+    margin-top:8px;
+  }
+  .close-dot{
+    width:16px;height:16px;border-radius:50%;
+    background:var(--trunk);
+    box-shadow:0 0 0 6px var(--cream), 0 0 0 8px var(--line);
+  }
+ 
+  /* ---------- Footer ---------- */
+  footer{
+    max-width:660px;
+    margin:34px auto 0;
+    text-align:center;
+  }
+  footer .foot-title{
+    font-size:13px;
+    color:var(--ink-soft2);
+    line-height:1.55;
+    margin:0 0 14px;
+  }
+  .refs{
+    display:flex;
+    flex-wrap:wrap;
+    justify-content:center;
+    gap:8px;
+  }
+  .refs span{
+    font-size:11px;
+    font-weight:700;
+    letter-spacing:.04em;
+    color:var(--maroon-deep);
+    background:var(--blush);
+    padding:5px 10px;
+    border-radius:999px;
+  }
+  :root[data-theme="dark"] .refs span{color:var(--ink);}
+  @media (prefers-color-scheme: dark){ :root:not([data-theme="light"]) .refs span{color:var(--ink);} }
+ 
+  /* ---------- Quick nav ---------- */
+  .quicknav{
+    display:flex;
+    flex-wrap:wrap;
+    justify-content:center;
+    gap:10px;
+    max-width:520px;
+    margin:20px auto 0;
+  }
+  .quicknav button{
+    width:38px;height:38px;
+    padding:0;
+    appearance:none;
+    -webkit-appearance:none;
+    border-radius:50%;
+    background:var(--paper);
+    border:2px solid var(--trunk);
+    color:var(--maroon-deep);
+    font-family:'Big Shoulders Display', sans-serif;
+    font-weight:800;
+    font-size:14px;
+    cursor:pointer;
+    transition:transform .2s ease, box-shadow .2s ease;
+  }
+  :root[data-theme="dark"] .quicknav button{color:var(--maroon);}
+  @media (prefers-color-scheme: dark){ :root:not([data-theme="light"]) .quicknav button{color:var(--maroon);} }
+  .quicknav button:hover, .quicknav button:focus-visible{
+    transform:translateY(-3px) scale(1.06);
+    box-shadow:0 8px 16px -8px rgba(36,28,25,.4);
+  }
+ 
+  /* ---------- Interactive controls ---------- */
+  .badge{cursor:pointer;transition:transform .2s ease, box-shadow .3s ease;}
+  .badge:hover, .badge:focus-visible{transform:scale(1.08);}
+  button.badge{font-family:'Big Shoulders Display', sans-serif;}
+  .badge, .quicknav button, .detail-toggle{
+    -webkit-tap-highlight-color:transparent;
+  }
+  button:focus-visible, .badge:focus-visible{
+    outline:2.5px solid var(--maroon-mid);
+    outline-offset:3px;
+  }
+ 
+  .card ul{
+    max-height:1100px;
+    opacity:1;
+    overflow:hidden;
+    transition:max-height .45s ease, opacity .35s ease, margin .45s ease;
+  }
+  .card.is-collapsed ul{
+    max-height:0;
+    opacity:0;
+    margin:0;
+  }
+  .detail-toggle{
+    display:inline-flex;
+    align-items:center;
+    gap:4px;
+    margin-top:12px;
+    padding:0;
+    border:none;
+    background:none;
+    font-family:'Source Sans 3', sans-serif;
+    font-size:12.5px;
+    font-weight:700;
+    letter-spacing:.03em;
+    color:var(--maroon-mid);
+    cursor:pointer;
+  }
+  .detail-toggle:hover{text-decoration:underline;}
+ 
+  .row.flash .card{
+    box-shadow:0 0 0 4px var(--maroon-mid), 0 18px 34px -16px rgba(36,28,25,.5);
+  }
+  .row.flash .badge{
+    box-shadow:0 0 0 7px rgba(156,48,64,.35);
+  }
+ 
+  /* ---------- Reduced motion ---------- */
+  @media (prefers-reduced-motion: reduce){
+    .row, .hub-wrap{animation:none !important; transform:none !important;}
+    .hub, .hub-ring, .icon-chip, .trunk-line::after, .connector path{animation:none !important;}
+    .card, .icon-chip{transition:none !important;}
+  }
+ 
+  /* ---------- Responsive ---------- */
+  @media (max-width:760px){
+    .row{
+      grid-template-columns: 52px 1fr;
+      column-gap:14px;
+      padding:26px 0;
+      display:flex;
+      flex-direction:column;
+    }
+    .connector{display:none;}
+    .trunk-line{left:26px;transform:none;}
+    .badge-col{position:absolute;left:0;top:26px;}
+    .badge{width:48px;height:48px;font-size:18px;border-width:3px;}
+    .card-col, .icon-col, .row.flip .card-col, .row.flip .icon-col{
+      grid-column:2;
+      justify-self:start;
+      margin-left:52px;
+    }
+    .icon-col{order:2;margin-top:12px;}
+    .card{max-width:none;}
+    .row.flip .card{margin-left:0;}
+    .icon-chip{width:72px;height:72px;border-radius:16px;}
+    .icon-chip svg{width:36px;height:36px;}
+  }
+</style>
+ 
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Big+Shoulders+Display:wght@700;800&family=Source+Sans+3:wght@400;600;700&display=swap">
+ 
+<div class="wrap">
+ 
+  <div class="masthead">
+    <div class="eyebrow">Auditoría de estados financieros</div>
+  </div>
+ 
+  <div class="hub-wrap">
+    <div class="hub">
+      <div class="hub-ring"></div>
+      <svg class="hub-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6">
+        <path d="M4 12l5 5L20 6" stroke-linecap="round" stroke-linejoin="round"/>
+        <circle cx="12" cy="12" r="9.2" stroke-opacity=".5"/>
+      </svg>
+      <h1>NIA 505</h1>
+      <p>Confirmaciones externas — evidencia de auditoría obtenida directamente de un tercero</p>
+      <div class="nia-tag">Vigente desde el 15&nbsp;dic&nbsp;2009</div>
+    </div>
+  </div>
+ 
+  <nav class="quicknav" aria-label="Ir a un bloque de la NIA 505">
+    <button type="button" data-goto="01" title="01 · Alcance y objetivo" aria-label="Ir a 01 · Alcance y objetivo">01</button>
+    <button type="button" data-goto="02" title="02 · Definiciones clave" aria-label="Ir a 02 · Definiciones clave">02</button>
+    <button type="button" data-goto="03" title="03 · Procedimientos de confirmación" aria-label="Ir a 03 · Procedimientos de confirmación">03</button>
+    <button type="button" data-goto="04" title="04 · Negativa de la dirección" aria-label="Ir a 04 · Negativa de la dirección">04</button>
+    <button type="button" data-goto="05" title="05 · Fiabilidad de las respuestas" aria-label="Ir a 05 · Fiabilidad de las respuestas">05</button>
+    <button type="button" data-goto="06" title="06 · Confirmaciones negativas" aria-label="Ir a 06 · Confirmaciones negativas">06</button>
+    <button type="button" data-goto="07" title="07 · Evaluación de la evidencia" aria-label="Ir a 07 · Evaluación de la evidencia">07</button>
+  </nav>
+ 
+  <div class="trunk-area">
+    <div class="trunk-line"></div>
+ 
+    <!-- 01 -->
+    <div class="row" id="node-01" style="--i:1">
+      <div class="card-col">
+        <div class="card">
+          <h2>01 · Alcance y objetivo</h2>
+          <p class="lead">Cómo y por qué el auditor recurre a la confirmación externa como evidencia de auditoría.</p>
+          <ul>
+            <li>Aplica a auditorías con periodos iniciados desde el 15 de diciembre de 2009; no cubre litigios ni reclamaciones (eso lo trata la NIA 501).</li>
+            <li>La NIA 500 recuerda que la evidencia es más fiable cuando procede de fuentes externas independientes, se obtiene directamente por el auditor y existe en forma documental.</li>
+            <li>La NIA 330 exige mayor convicción de evidencia cuanto mayor sea el riesgo valorado, y señala la confirmación externa como respuesta idónea a riesgos significativos de fraude o error.</li>
+            <li>La NIA 240 permite diseñar solicitudes de confirmación para obtener información corroborativa adicional frente a riesgos de fraude en las afirmaciones.</li>
+            <li><strong>Objetivo:</strong> diseñar y aplicar procedimientos de confirmación externa que produzcan evidencia de auditoría relevante y fiable.</li>
+          </ul>
+          <button class="detail-toggle" type="button" aria-expanded="true">Ocultar detalle ▴</button>
+        </div>
+      </div>
+      <div class="connector left"><svg viewBox="0 0 58 100" preserveAspectRatio="none"><path d="M58,30 C36,30 22,22 0,36"/></svg></div>
+      <div class="badge-col"><button class="badge" type="button" data-goto="01" aria-label="Ir a 01 · Alcance y objetivo">01</button></div>
+      <div class="connector right"><svg viewBox="0 0 58 100" preserveAspectRatio="none"><path d="M0,30 C22,30 36,22 58,36"/></svg></div>
+      <div class="icon-col">
+        <div class="icon-chip">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
+            <circle cx="12" cy="12" r="9"/><circle cx="12" cy="12" r="5"/><circle cx="12" cy="12" r="1.2" fill="currentColor" stroke="none"/>
+          </svg>
+        </div>
+      </div>
+    </div>
+ 
+    <!-- 02 -->
+    <div class="row flip" id="node-02" style="--i:2">
+      <div class="icon-col">
+        <div class="icon-chip">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
+            <rect x="4" y="3.5" width="16" height="17" rx="1.6"/>
+            <path d="M8 8h8M8 12h8M8 16h5" stroke-linecap="round"/>
+          </svg>
+        </div>
+      </div>
+      <div class="connector left"><svg viewBox="0 0 58 100" preserveAspectRatio="none"><path d="M58,30 C36,30 22,22 0,36"/></svg></div>
+      <div class="badge-col"><button class="badge" type="button" data-goto="02" aria-label="Ir a 02 · Definiciones clave">02</button></div>
+      <div class="connector right"><svg viewBox="0 0 58 100" preserveAspectRatio="none"><path d="M0,30 C22,30 36,22 58,36"/></svg></div>
+      <div class="card-col">
+        <div class="card">
+          <h2>02 · Definiciones clave</h2>
+          <p class="lead">Los términos que fijan qué se solicita y qué cuenta como una confirmación válida.</p>
+          <ul>
+            <li><strong>Confirmación externa:</strong> respuesta directa por escrito de un tercero al auditor, en papel, soporte electrónico u otro medio.</li>
+            <li><strong>Solicitud positiva:</strong> pide a la parte confirmante que responda en todos los casos, esté o no de acuerdo con la información.</li>
+            <li><strong>Solicitud negativa:</strong> solo se responde si existe desacuerdo con la información incluida.</li>
+            <li><strong>Sin contestación:</strong> falta de respuesta, respuesta parcial, o solicitud devuelta sin entregar.</li>
+            <li><strong>Contestación en disconformidad:</strong> discrepancia entre lo solicitado o los registros de la entidad y la información que facilita la parte confirmante.</li>
+            <li>El formato de la respuesta (papel, correo electrónico, portal) no cambia su naturaleza de evidencia de un tercero independiente.</li>
+          </ul>
+          <button class="detail-toggle" type="button" aria-expanded="true">Ocultar detalle ▴</button>
+        </div>
+      </div>
+    </div>
+ 
+    <!-- 03 -->
+    <div class="row" id="node-03" style="--i:3">
+      <div class="card-col">
+        <div class="card">
+          <h2>03 · Procedimientos de confirmación</h2>
+          <p class="lead">El auditor mantiene el control de todo el proceso de solicitud, desde el diseño hasta el envío.</p>
+          <ul>
+            <li>Determina qué información ha de confirmarse o solicitarse.</li>
+            <li>Selecciona a la parte confirmante adecuada, la que mejor conoce la información buscada.</li>
+            <li>Diseña la solicitud considerando las afirmaciones tratadas, los riesgos específicos (incluido el fraude), el formato, la experiencia previa y el método de comunicación.</li>
+            <li>Comprueba que las solicitudes estén correctamente dirigidas y permitan una respuesta directa al auditor.</li>
+            <li>Una solicitud positiva "en blanco" (sin indicar el importe) reduce el riesgo de respuestas sin verificar, aunque suele bajar la tasa de respuesta.</li>
+            <li>Envía las solicitudes, incluido el seguimiento o un recordatorio cuando no llega respuesta en un plazo razonable.</li>
+          </ul>
+          <button class="detail-toggle" type="button" aria-expanded="true">Ocultar detalle ▴</button>
+        </div>
+      </div>
+      <div class="connector left"><svg viewBox="0 0 58 100" preserveAspectRatio="none"><path d="M58,30 C36,30 22,22 0,36"/></svg></div>
+      <div class="badge-col"><button class="badge" type="button" data-goto="03" aria-label="Ir a 03 · Procedimientos de confirmación">03</button></div>
+      <div class="connector right"><svg viewBox="0 0 58 100" preserveAspectRatio="none"><path d="M0,30 C22,30 36,22 58,36"/></svg></div>
+      <div class="icon-col">
+        <div class="icon-chip">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
+            <rect x="5" y="4" width="14" height="17" rx="1.6"/>
+            <path d="M9 3.5h6v2H9z"/>
+            <path d="M8.5 12.5l2 2 4-4.5" stroke-linecap="round" stroke-linejoin="round"/>
+          </svg>
+        </div>
+      </div>
+    </div>
+ 
+    <!-- 04 -->
+    <div class="row flip" id="node-04" style="--i:4">
+      <div class="icon-col">
+        <div class="icon-chip">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
+            <path d="M12 3l7 3.2v5.3c0 4.6-3 7.7-7 9.3-4-1.6-7-4.7-7-9.3V6.2L12 3z"/>
+            <path d="M9 9l6 6M15 9l-6 6" stroke-linecap="round"/>
+          </svg>
+        </div>
+      </div>
+      <div class="connector left"><svg viewBox="0 0 58 100" preserveAspectRatio="none"><path d="M58,30 C36,30 22,22 0,36"/></svg></div>
+      <div class="badge-col"><button class="badge" type="button" data-goto="04" aria-label="Ir a 04 · Negativa de la dirección">04</button></div>
+      <div class="connector right"><svg viewBox="0 0 58 100" preserveAspectRatio="none"><path d="M0,30 C22,30 36,22 58,36"/></svg></div>
+      <div class="card-col">
+        <div class="card">
+          <h2>04 · Negativa de la dirección</h2>
+          <p class="lead">Si la dirección se niega a que el auditor envíe la solicitud de confirmación:</p>
+          <ul>
+            <li>Indaga los motivos y busca evidencia sobre su validez y razonabilidad; un motivo común es un litigio o negociación en curso con la parte confirmante.</li>
+            <li>Evalúa el efecto sobre la valoración del riesgo de incorrección material, incluido el riesgo de fraude, y sobre otros procedimientos planificados.</li>
+            <li>Aplica procedimientos de auditoría alternativos diseñados para obtener evidencia relevante y fiable.</li>
+            <li>Si concluye que la negativa no es razonable, o no logra evidencia suficiente por otra vía, se comunica con los responsables del gobierno de la entidad (NIA 260) y valora el efecto en la opinión del auditor (NIA 705).</li>
+          </ul>
+          <button class="detail-toggle" type="button" aria-expanded="true">Ocultar detalle ▴</button>
+        </div>
+      </div>
+    </div>
+ 
+    <!-- 05 -->
+    <div class="row" id="node-05" style="--i:5">
+      <div class="card-col">
+        <div class="card">
+          <h2>05 · Fiabilidad de las respuestas</h2>
+          <ul>
+            <li>Toda respuesta conlleva algún riesgo de interceptación, alteración o fraude, sea en papel o por medio electrónico.</li>
+            <li>Las respuestas por fax o correo electrónico son más difíciles de verificar en cuanto a procedencia y autoría; el riesgo se mitiga con procesos seguros: encriptación, firmas digitales o verificación de la autenticidad del sitio web.</li>
+            <li>Una respuesta verbal, por sí sola, no cumple la definición de confirmación externa; puede motivar que el auditor pida una respuesta por escrito o busque evidencia alternativa.</li>
+            <li>Si hay dudas sobre la fiabilidad de una respuesta, se obtiene evidencia adicional y se verifica la fuente y el contenido, incluso llamando directamente a la parte confirmante.</li>
+            <li>Sin contestación → procedimientos alternativos (por ejemplo, examen de cobros o pagos posteriores al cierre).</li>
+            <li>En ciertas circunstancias, solo una respuesta a una solicitud positiva basta para lograr evidencia suficiente y adecuada.</li>
+          </ul>
+          <button class="detail-toggle" type="button" aria-expanded="true">Ocultar detalle ▴</button>
+        </div>
+      </div>
+      <div class="connector left"><svg viewBox="0 0 58 100" preserveAspectRatio="none"><path d="M58,30 C36,30 22,22 0,36"/></svg></div>
+      <div class="badge-col"><button class="badge" type="button" data-goto="05" aria-label="Ir a 05 · Fiabilidad de las respuestas">05</button></div>
+      <div class="connector right"><svg viewBox="0 0 58 100" preserveAspectRatio="none"><path d="M0,30 C22,30 36,22 58,36"/></svg></div>
+      <div class="icon-col">
+        <div class="icon-chip">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
+            <path d="M3 12a9 9 0 1 1 9 9" stroke-linecap="round"/>
+            <path d="M3 12l3-3M3 12l3 3" stroke-linecap="round" stroke-linejoin="round"/>
+            <circle cx="12" cy="12" r="2" fill="currentColor" stroke="none"/>
+          </svg>
+        </div>
+      </div>
+    </div>
+ 
+    <!-- 06 -->
+    <div class="row flip" id="node-06" style="--i:6">
+      <div class="icon-col">
+        <div class="icon-chip">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
+            <circle cx="12" cy="12" r="9"/>
+            <path d="M7 12h10" stroke-linecap="round"/>
+          </svg>
+        </div>
+      </div>
+      <div class="connector left"><svg viewBox="0 0 58 100" preserveAspectRatio="none"><path d="M58,30 C36,30 22,22 0,36"/></svg></div>
+      <div class="badge-col"><button class="badge" type="button" data-goto="06" aria-label="Ir a 06 · Confirmaciones negativas">06</button></div>
+      <div class="connector right"><svg viewBox="0 0 58 100" preserveAspectRatio="none"><path d="M0,30 C22,30 36,22 58,36"/></svg></div>
+      <div class="card-col">
+        <div class="card">
+          <h2>06 · Confirmaciones negativas</h2>
+          <p class="lead">Ofrecen evidencia menos convincente que las positivas: no sirven como único procedimiento sustantivo frente a un riesgo valorado de incorrección material, salvo que se cumplan a la vez las cuatro condiciones siguientes.</p>
+          <ul>
+            <li>El riesgo valorado es bajo y existe evidencia suficiente sobre la eficacia operativa de los controles relevantes.</li>
+            <li>La población incluye un gran número de saldos, transacciones o condiciones pequeñas y homogéneas.</li>
+            <li>Se espera un porcentaje muy pequeño de contestaciones en disconformidad.</li>
+            <li>El auditor no conoce circunstancias que lleven a los destinatarios a desatender estas solicitudes.</li>
+            <li>Son útiles, por ejemplo, para detectar saldos bancarios infravalorados, pero poco eficaces para detectar sobrevaloraciones.</li>
+          </ul>
+          <button class="detail-toggle" type="button" aria-expanded="true">Ocultar detalle ▴</button>
+        </div>
+      </div>
+    </div>
+ 
+    <!-- 07 -->
+    <div class="row" id="node-07" style="--i:7">
+      <div class="card-col">
+        <div class="card">
+          <h2>07 · Evaluación de la evidencia</h2>
+          <p class="lead">Cómo cierra el auditor el ciclo: clasificar, investigar y concluir sobre la evidencia reunida.</p>
+          <ul>
+            <li>Clasifica cada resultado individual: respuesta conforme sin excepciones, respuesta no fiable, sin contestación, o contestación en disconformidad.</li>
+            <li>Investiga las disconformidades: pueden indicar incorrecciones reales, o simples errores por desfase temporal, de medición o administrativos.</li>
+            <li>Una disconformidad confirmada como incorrección obliga a valorar, conforme a la NIA 240, si es indicativa de fraude.</li>
+            <li>Considerando el resto de la evidencia obtenida, concluye si el conjunto es suficiente y adecuado, o si se necesita evidencia de auditoría adicional (NIA 330).</li>
+          </ul>
+          <button class="detail-toggle" type="button" aria-expanded="true">Ocultar detalle ▴</button>
+        </div>
+      </div>
+      <div class="connector left"><svg viewBox="0 0 58 100" preserveAspectRatio="none"><path d="M58,30 C36,30 22,22 0,36"/></svg></div>
+      <div class="badge-col"><button class="badge" type="button" data-goto="07" aria-label="Ir a 07 · Evaluación de la evidencia">07</button></div>
+      <div class="connector right"><svg viewBox="0 0 58 100" preserveAspectRatio="none"><path d="M0,30 C22,30 36,22 58,36"/></svg></div>
+      <div class="icon-col">
+        <div class="icon-chip">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
+            <path d="M12 3l7 3.2v5.3c0 4.6-3 7.7-7 9.3-4-1.6-7-4.7-7-9.3V6.2L12 3z"/>
+            <path d="M9 12.2l2 2 4-4.4" stroke-linecap="round" stroke-linejoin="round"/>
+          </svg>
+        </div>
+      </div>
+    </div>
+ 
+  </div>
+ 
+  <div class="close-node"><div class="close-dot"></div></div>
+ 
+  <footer>
+    <p class="foot-title">Mapa mental basado en la NIA 505, «Confirmaciones externas», interpretada conjuntamente con la NIA 200. Normas relacionadas citadas en el texto:</p>
+    <div class="refs">
+      <span>NIA 200</span><span>NIA 240</span><span>NIA 260</span><span>NIA 315</span><span>NIA 330</span><span>NIA 500</span><span>NIA 501</span><span>NIA 705</span>
+    </div>
+  </footer>
+ 
+</div>
+ 
+<script>
+(function(){
+  var reduceMotion = window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+ 
+  function goTo(id){
+    var el = document.getElementById('node-' + id);
+    if(!el) return;
+    el.scrollIntoView({ behavior: reduceMotion ? 'auto' : 'smooth', block: 'center' });
+    el.classList.add('flash');
+    window.clearTimeout(el._flashTimer);
+    el._flashTimer = window.setTimeout(function(){ el.classList.remove('flash'); }, 1000);
+  }
+ 
+  document.querySelectorAll('[data-goto]').forEach(function(btn){
+    btn.addEventListener('click', function(){ goTo(btn.getAttribute('data-goto')); });
+  });
+ 
+  document.querySelectorAll('.detail-toggle').forEach(function(btn){
+    btn.addEventListener('click', function(){
+      var card = btn.closest('.card');
+      var collapsed = card.classList.toggle('is-collapsed');
+      btn.setAttribute('aria-expanded', String(!collapsed));
+      btn.textContent = collapsed ? 'Ver detalle completo ▾' : 'Ocultar detalle ▴';
+    });
+  });
+})();
+</script>
